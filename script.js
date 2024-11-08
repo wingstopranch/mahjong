@@ -27,9 +27,17 @@ function initializeGame() {
 
 function generateTiles() {
   const tiles = [];
-  for (let i = 0; i < 144; i++) {
-    tiles.push(`tile-${i}`);
-  }
+  // Generate each suit with numbers 1-9 based on shared layout
+  ['Coins', 'Bamboo', 'Characters'].forEach(suit => {
+    for (let value = 1; value <= 9; value++) {
+      tiles.push({ suit, value });
+    }
+  });
+  // Add Honor and Flower tiles
+  tiles.push(...Array.from({length: 4}, (_, i) => ({ suit: 'Dragons', value: i })));
+  tiles.push(...Array.from({length: 4}, (_, i) => ({ suit: 'Winds', value: i })));
+  tiles.push(...Array.from({length: 4}, (_, i) => ({ suit: 'Flowers', value: i })));
+  
   return tiles.sort(() => Math.random() - 0.5);
 }
 
@@ -43,22 +51,29 @@ function drawStartingHands() {
 function renderHands() {
   const playerDiv = document.getElementById('player');
   playerDiv.innerHTML = "";
-  gameState.playerHand.forEach(tileId => {
-    const tileImg = document.createElement('img');
-    tileImg.src = `images/${tileId}.png`; // Tile images stored in 'images' folder
-    tileImg.classList.add('tile', 'drawn');
-    playerDiv.appendChild(tileImg);
+  gameState.playerHand.forEach(tile => {
+    const tileDiv = document.createElement('div');
+    tileDiv.classList.add('tile', 'drawn');
+    tileDiv.textContent = `${tile.value} ${tile.suit}`;
+    playerDiv.appendChild(tileDiv);
   });
 }
 
 function playerAction(action) {
   if (action === 'pong') {
-    // Execute pong action
+    animateAction('pong');
   } else if (action === 'chi') {
-    // Execute chi action
+    animateAction('chi');
   } else if (action === 'hu') {
+    animateAction('hu');
     calculateScore();
   }
+}
+
+function animateAction(action) {
+  document.querySelectorAll('.tile').forEach(tile => {
+    tile.classList.add(action === 'pong' ? 'move' : 'flipped');
+  });
 }
 
 function calculateScore() {
@@ -67,9 +82,9 @@ function calculateScore() {
   let baseScore = 0;
 
   gameState.playerHand.forEach(tile => {
-    if (isFlower(tile)) flowers++;
-    if (isAnimal(tile)) animals++;
-    baseScore += getTileScore(tile);
+    if (tile.suit === 'Flowers') flowers++;
+    if (tile.suit === 'Animals') animals++;
+    baseScore += 1; // Placeholder for scoring logic
   });
 
   gameState.score = baseScore + (flowers * 10) + (animals * 20);
@@ -80,25 +95,4 @@ function displayScore(score, flowers, animals) {
   document.getElementById('score').textContent = score;
   document.getElementById('flowers').textContent = flowers;
   document.getElementById('animals').textContent = animals;
-}
-
-function isFlower(tile) {
-  return tile.includes('flower');
-}
-
-function isAnimal(tile) {
-  return tile.includes('animal');
-}
-
-function getTileScore(tile) {
-  return 1; // Placeholder for actual scoring logic
-}
-
-function toggleSound() {
-  gameState.soundOn = !gameState.soundOn;
-  document.getElementById('mute-btn').textContent = gameState.soundOn ? 'Mute' : 'Unmute';
-}
-
-function showHint() {
-  alert("Hint: Try to form a Pong with tile X");
 }
