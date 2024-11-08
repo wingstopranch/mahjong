@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahjong Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-board" class="traditional-table">
+    <!-- Sections for player hand, bot hands, and draw pile -->
+  </div>
+  
+  <!-- Controls Section -->
+  <div id="controls">
+    <button id="pong-btn" onclick="playerAction('pong')">Pong</button>
+    <button id="chi-btn" onclick="playerAction('chi')">Chi</button>
+    <button id="hu-btn" onclick="playerAction('hu')">Hu</button>
+    <button id="hint-btn" onclick="showHint()">Hint</button>
+    <button id="mute-btn" onclick="toggleSound()">Mute</button>
+  </div>
+
+  <!-- Scoring display -->
+  <div id="score-display">
+    <p>Score: <span id="score"></span></p>
+    <p>Flowers: <span id="flowers"></span></p>
+    <p>Animals: <span id="animals"></span></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

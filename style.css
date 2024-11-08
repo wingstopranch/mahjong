@@ -1,0 +1,29 @@
+.traditional-table {
+  background-image: url('table-background.jpg'); /* Replace with actual path to table image */
+  background-size: cover;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#game-board {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  width: 100%;
+  padding: 10px;
+}
+
+#controls {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+}
+
+#score-display {
+  font-size: 18px;
+  color: #333;
+}
