@@ -7,21 +7,37 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="game-board" class="traditional-table">
-    <!-- Sections for player hand, bot hands, and draw pile -->
-  </div>
-  
-  <!-- Controls Section -->
-  <div id="controls">
-    <button id="pong-btn" onclick="playerAction('pong')">Pong</button>
-    <button id="chi-btn" onclick="playerAction('chi')">Chi</button>
-    <button id="hu-btn" onclick="playerAction('hu')">Hu</button>
-    <button id="hint-btn" onclick="showHint()">Hint</button>
-    <button id="mute-btn" onclick="toggleSound()">Mute</button>
+  <!-- Starting Page with Difficulty Selection -->
+  <div id="start-page">
+    <h1>Mahjong Game</h1>
+    <button onclick="startGame('easy')">Easy</button>
+    <button onclick="startGame('medium')">Medium</button>
+    <button onclick="startGame('hard')">Hard</button>
   </div>
 
-  <!-- Scoring display -->
-  <div id="score-display">
+  <!-- Game Board Section -->
+  <div id="game-board" class="traditional-table" style="display:none;">
+    <!-- Wall or Draw Pile Area -->
+    <div id="wall" class="wall"></div>
+    
+    <!-- Player and Bot Hand Areas -->
+    <div id="bot1" class="bot-hand">Ming Yi</div>
+    <div id="bot2" class="bot-hand">Wilson</div>
+    <div id="player" class="player-hand">Your Hand</div>
+    <div id="bot3" class="bot-hand">Quan Yang</div>
+  </div>
+
+  <!-- Controls Section with Enhanced Buttons -->
+  <div id="controls" style="display:none;">
+    <button id="pong-btn" class="action-btn" onclick="playerAction('pong')">Pong</button>
+    <button id="chi-btn" class="action-btn" onclick="playerAction('chi')">Chi</button>
+    <button id="hu-btn" class="action-btn" onclick="playerAction('hu')">Hu</button>
+    <button id="hint-btn" class="action-btn" onclick="showHint()">Hint</button>
+    <button id="mute-btn" class="action-btn" onclick="toggleSound()">Mute</button>
+  </div>
+
+  <!-- Scoring Display -->
+  <div id="score-display" style="display:none;">
     <p>Score: <span id="score"></span></p>
     <p>Flowers: <span id="flowers"></span></p>
     <p>Animals: <span id="animals"></span></p>

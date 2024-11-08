@@ -1,29 +1,102 @@
-.traditional-table {
-  background-image: url('table-background.jpg'); /* Replace with actual path to table image */
-  background-size: cover;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
 }
 
-#game-board {
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  width: 100%;
-  padding: 10px;
-}
-
-#controls {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
+#start-page {
+  text-align: center;
+  margin-top: 100px;
 }
 
 button {
+  padding: 15px 30px;
+  margin: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #3b6b9a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2a4e73;
+}
+
+#game-board {
+  background-color: #35654d; /* Green felt color */
+  border-radius: 15px;
+  width: 90%;
+  max-width: 900px;
+  height: 600px;
+  display: grid;
+  grid-template-areas:
+    "bot1 wall bot2"
+    "player player player";
+  gap: 10px;
+  padding: 20px;
+  position: relative;
+}
+
+.bot-hand, .player-hand {
+  background-color: #2d3f2f;
+  color: #fff;
+  text-align: center;
   padding: 10px;
+  border-radius: 8px;
+}
+
+.wall {
+  background-color: #1e2b1f;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  grid-area: wall;
+  border-radius: 8px;
+}
+
+#controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.action-btn {
+  padding: 10px 15px;
+  font-size: 14px;
   margin: 5px;
+  border-radius: 5px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+  background-color: #d4af37;
 }
 
 #score-display {
+  text-align: center;
   font-size: 18px;
   color: #333;
+  margin-top: 20px;
+}
+
+.tile {
+  width: 50px;
+  height: 70px;
+  margin: 2px;
+  transition: transform 0.3s ease;
+}
+
+.tile.drawn {
+  animation: drawTile 0.5s forwards;
+}
+
+@keyframes drawTile {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
