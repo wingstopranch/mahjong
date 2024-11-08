@@ -2,7 +2,8 @@ const gameState = {
   playerHand: [],
   botHands: [[], [], []],
   wall: [],
-  currentTurn: 'player',
+  discardedTiles: [],
+  selectedTile: null,
   score: 0,
   flowers: 0,
   animals: 0,
@@ -27,17 +28,14 @@ function initializeGame() {
 
 function generateTiles() {
   const tiles = [];
-  // Generate each suit with numbers 1-9 based on shared layout
   ['Coins', 'Bamboo', 'Characters'].forEach(suit => {
     for (let value = 1; value <= 9; value++) {
       tiles.push({ suit, value });
     }
   });
-  // Add Honor and Flower tiles
   tiles.push(...Array.from({length: 4}, (_, i) => ({ suit: 'Dragons', value: i })));
   tiles.push(...Array.from({length: 4}, (_, i) => ({ suit: 'Winds', value: i })));
   tiles.push(...Array.from({length: 4}, (_, i) => ({ suit: 'Flowers', value: i })));
-  
   return tiles.sort(() => Math.random() - 0.5);
 }
 
@@ -49,50 +47,68 @@ function drawStartingHands() {
 }
 
 function renderHands() {
-  const playerDiv = document.getElementById('player');
-  playerDiv.innerHTML = "";
-  gameState.playerHand.forEach(tile => {
+  const playerTilesDiv = document.getElementById('player-tiles');
+  playerTilesDiv.innerHTML = "";
+  gameState.playerHand.forEach((tile, index) => {
     const tileDiv = document.createElement('div');
-    tileDiv.classList.add('tile', 'drawn');
+    tileDiv.classList.add('tile');
     tileDiv.textContent = `${tile.value} ${tile.suit}`;
-    playerDiv.appendChild(tileDiv);
+    tileDiv.onclick = () => selectTile(index);
+    if (index === gameState.selectedTile) tileDiv.classList.add('selected');
+    playerTilesDiv.appendChild(tileDiv);
+  });
+}
+
+function selectTile(index) {
+  if (gameState.selectedTile === index) {
+    gameState.selectedTile = null;
+    document.getElementById('discard-btn').disabled = true;
+  } else {
+    gameState.selectedTile = index;
+    document.getElementById('discard-btn').disabled = false;
+  }
+  renderHands();
+}
+
+function drawTile() {
+  if (gameState.wall.length > 0) {
+    const newTile = gameState.wall.pop();
+    gameState.playerHand.push(newTile);
+    renderHands();
+  }
+}
+
+function discardTile() {
+  if (gameState.selectedTile !== null) {
+    const discarded = gameState.playerHand.splice(gameState.selectedTile, 1)[0];
+    gameState.discardedTiles.push(discarded);
+    gameState.selectedTile = null;
+    document.getElementById('discard-btn').disabled = true;
+    renderHands();
+    updateDiscardedTiles();
+  }
+}
+
+function updateDiscardedTiles() {
+  const discardedDiv = document.getElementById('discarded-tiles');
+  discardedDiv.innerHTML = '';
+  gameState.discardedTiles.forEach(tile => {
+    const tileDiv = document.createElement('div');
+    tileDiv.classList.add('tile');
+    tileDiv.textContent = `${tile.value} ${tile.suit}`;
+    discardedDiv.appendChild(tileDiv);
   });
 }
 
 function playerAction(action) {
-  if (action === 'pong') {
-    animateAction('pong');
-  } else if (action === 'chi') {
-    animateAction('chi');
-  } else if (action === 'hu') {
-    animateAction('hu');
-    calculateScore();
-  }
+  console.log(`${action} performed`);
 }
 
-function animateAction(action) {
-  document.querySelectorAll('.tile').forEach(tile => {
-    tile.classList.add(action === 'pong' ? 'move' : 'flipped');
-  });
+function showHint() {
+  console.log("Hint shown");
 }
 
-function calculateScore() {
-  let flowers = 0;
-  let animals = 0;
-  let baseScore = 0;
-
-  gameState.playerHand.forEach(tile => {
-    if (tile.suit === 'Flowers') flowers++;
-    if (tile.suit === 'Animals') animals++;
-    baseScore += 1; // Placeholder for scoring logic
-  });
-
-  gameState.score = baseScore + (flowers * 10) + (animals * 20);
-  displayScore(gameState.score, flowers, animals);
-}
-
-function displayScore(score, flowers, animals) {
-  document.getElementById('score').textContent = score;
-  document.getElementById('flowers').textContent = flowers;
-  document.getElementById('animals').textContent = animals;
+function toggleSound() {
+  gameState.soundOn = !gameState.soundOn;
+  console.log(`Sound ${gameState.soundOn ? 'On' : 'Off'}`);
 }

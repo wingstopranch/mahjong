@@ -20,10 +20,23 @@
     <!-- Wall or Draw Pile Area -->
     <div id="wall" class="wall">Wall</div>
     
+    <!-- Discard Area for All Players -->
+    <div id="discard-area">
+      <h3>Discarded Tiles</h3>
+      <div id="discarded-tiles"></div>
+    </div>
+
     <!-- Player and Bot Hand Areas -->
     <div id="bot1" class="bot-hand">Ming Yi</div>
     <div id="bot2" class="bot-hand">Wilson</div>
-    <div id="player" class="player-hand">Your Hand</div>
+    <div id="player" class="player-hand">
+      <h3>Your Hand</h3>
+      <div id="player-tiles"></div>
+      <div class="button-group">
+        <button id="draw-btn" onclick="drawTile()">Draw Tile</button>
+        <button id="discard-btn" onclick="discardTile()" disabled>Discard Tile</button>
+      </div>
+    </div>
     <div id="bot3" class="bot-hand">Quan Yang</div>
   </div>
 
